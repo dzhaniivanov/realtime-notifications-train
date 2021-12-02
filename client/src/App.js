@@ -15,6 +15,7 @@ function App() {
         <>
           <Navbar />
           <Card />
+          <span className="username">{user}</span>
         </>
       ) : (
         <div className="login">
