@@ -1,12 +1,19 @@
 import './App.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from './components/Navbar/Navbar';
 import Card from './components/Card/Card';
-import { posts } from "./data"
+import { posts } from "./data";
+import { io } from "socket.io-client";
 
 function App() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+    console.log(socket)
+
+  }, [])
 
 
 
