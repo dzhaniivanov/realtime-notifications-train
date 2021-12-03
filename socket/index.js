@@ -35,7 +35,16 @@ io.on("connection", (socket) => {
             senderName,
             type
         });
+    });
+
+    socket.on("sendText", ({ senderName, receiverName, text }) => {
+        const receiver = getUser(receiverName);
+        io.to(receiver.socketId).emit("getText", {
+            senderName,
+            text
+        });
     }) 
+
 
 
     socket.on("disconnect", () => {

@@ -11,26 +11,31 @@ const Navbar = ({ socket }) => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        socket.on("getNotification", (data) => {
+        socket.on("getText", (data) => {
             setNotifications((prev) => [...prev, data])
         })
     }, [socket]);
 
-    const displayNotification = ({ senderName, type }) => {
+    const displayNotification = ({ senderName, text }) => {
         let action;
 
-        if (type === 1) {
-            action = "liked";
-        } else if (type === 2) {
-            action = "commented";
-        } else {
-            action = "shared"
-        }
+        // if (type === 1) {
+        //     action = "liked";
+        // } else if (type === 2) {
+        //     action = "commented";
+        // } else {
+        //     action = "shared"
+        // }
         return (
             <span className="notification">
-                {`${senderName} ${action} your post`}
+                {`${senderName}: ${text}`}
             </span>
         )
+    };
+
+    const handleRead = () => {
+        setNotifications([]);
+        setOpen(false);
     }
 
     return (
@@ -39,15 +44,16 @@ const Navbar = ({ socket }) => {
             <div className="icons">
                 <div className="icon" onClick={() => setOpen(!open)}>
                     <img src={Notification} alt="" className="iconImg" />
-                    <div className="counter">2</div>
+                    {
+                        notifications.length > 0 &&
+                        <div className="counter">{notifications.length}</div>
+                    }
                 </div>
-                <div className="icon"  onClick={() => setOpen(!open)}>
+                <div className="icon" onClick={() => setOpen(!open)}>
                     <img src={Message} alt="" className="iconImg" />
-                    <div className="counter">2</div>
                 </div>
-                <div className="icon"  onClick={() => setOpen(!open)}>
+                <div className="icon" onClick={() => setOpen(!open)}>
                     <img src={Settings} alt="" className="iconImg" />
-                    <div className="counter">2</div>
                 </div>
             </div>
             {open &&
@@ -55,6 +61,9 @@ const Navbar = ({ socket }) => {
                     {notifications.map((n) => (
                         displayNotification(n)
                     ))}
+                    <button className="nButton" onClick={(handleRead)}>
+                        Mark as read
+                    </button>
                 </div>
             }
         </div>
